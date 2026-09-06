@@ -67,4 +67,3 @@ Journal entries are stored in the `entries` collection. Conversation messages ar
 - Use Firebase Authentication before reading or writing journal data.
 - Validate ownership in Firestore rules as well as in the client.
 - Treat journal content as private user data when logging or debugging.
-
