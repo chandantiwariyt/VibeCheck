@@ -1,0 +1,104 @@
+{
+  "entities": {
+    "JournalEntry": {
+      "title": "JournalEntry",
+      "description": "A private reflection or journal entry created by an authenticated user",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the journal entry"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID of the owner"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the journal reflection",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "content": {
+          "type": "string",
+          "description": "Initial entry text or reflection written by the user",
+          "maxLength": 10000
+        },
+        "mode": {
+          "type": "string",
+          "description": "Type of reflection session",
+          "enum": ["reflection", "brainstorm", "summary", "conversation"]
+        },
+        "summary": {
+          "type": "string",
+          "description": "Gemini-generated summary or core takeaway",
+          "maxLength": 2500
+        },
+        "tags": {
+          "type": "array",
+          "description": "Optional categorizing tags (up to 5)",
+          "items": {
+            "type": "string"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the entry was created"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the entry was last updated"
+        }
+      },
+      "required": ["userId", "title", "content", "mode", "createdAt", "updatedAt"]
+    },
+    "JournalMessage": {
+      "title": "JournalMessage",
+      "description": "A message turn in the multi-turn reflection conversation with Gemini",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the message"
+        },
+        "entryId": {
+          "type": "string",
+          "description": "Parent journal entry ID"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID of the owner"
+        },
+        "role": {
+          "type": "string",
+          "description": "Sender role in conversation",
+          "enum": ["user", "model"]
+        },
+        "content": {
+          "type": "string",
+          "description": "Message text content",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the message was sent"
+        }
+      },
+      "required": ["entryId", "userId", "role", "content", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/entries/{entryId}": {
+      "schema": "JournalEntry",
+      "description": "Root collection of private user journal reflections"
+    },
+    "/entries/{entryId}/messages/{messageId}": {
+      "schema": "JournalMessage",
+      "description": "Subcollection of multi-turn conversation messages under a journal entry"
+    }
+  }
+}

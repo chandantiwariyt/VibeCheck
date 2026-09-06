@@ -1,0 +1,6 @@
+{
+  "name": "VibeCheck",
+  "description": "Personal vibe check, emotional baseline tracking, and reflection journal powered by Gemini and Cloud Firestore",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
